@@ -13,16 +13,16 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 - 🪄 **Syntax Highlighting** — CodeMirror-based SQL editor with line numbers and highlighting.  
 - 🗂️ **Live Query Execution** — Run SQL queries directly and view formatted table results instantly.  
 - 🧑‍💻 **VS Code–like Layout** — A clean, dark-themed design with modern UI elements.  
-### 🏠 Preview  —  
-## *Home Page:** Overview and quick access.
-# **Light Theme** 
+## Preview  —  
+## 🏠 Home Page: Overview and quick access.
+### 🌞 Light Theme 
   ![App Preview](static/images/home.png)
-# **Dark Theme** 
+### 🌙 Dark Theme
   ![App Preview](static/images/home-dark.png)
-## **Editor Page:** Full workspace with chatbot and database tools.
-# **Light Theme** 
+## ✏️ Editor Page: Full workspace with chatbot and database tools.
+### 🌞 Light Theme
   ![App Preview](static/images/editor.png)
-# **Dark Theme** 
+### 🌙 Dark Theme
   ![App Preview](static/images/editor-dark.png)
 
 ---
