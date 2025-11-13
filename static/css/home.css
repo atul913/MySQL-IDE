@@ -1,0 +1,1126 @@
+/* CSS FOR HOME PAG */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #667eea;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+    --shadow-sm: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme {
+    --primary-color: #667eea;
+    --bg-main: #111319;
+    --bg-card: #1a1d26;
+    --text-primary: #f8fafc;
+    --text-secondary: #a0aec0;
+    --border-color: #333847;
+    --shadow-sm: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+/* Subtle background grid for techy feel */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(var(--border-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.1;
+    z-index: -1;
+
+}
+
+/* =======================================
+   === THE MAIN FIX IS HERE ===
+   ======================================= */
+.container {
+    max-width: 1500px;
+    /* CHANGED: Was 1200px. This makes the content wider. */
+    margin: 0 auto;
+    padding: 0 40px;
+    /* CHANGED: Was 30px. Adds a bit more breathing room on the sides. */
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.logo i {
+    font-size: 26px;
+    color: var(--primary-color);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    width: 50px;
+    height: 26px;
+    background: var(--border-color);
+    border-radius: 13px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-circle {
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+}
+
+.theme-toggle.dark .theme-toggle-circle {
+    left: 27px;
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 140px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    animation: fadeIn 0.8s ease;
+}
+
+.hero-content h1 {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+}
+
+.hero-content h1 span {
+    color: var(--primary-color);
+}
+
+.hero-content .description {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+/* Login Card */
+.login-card {
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 16px;
+    padding: 40px;
+    overflow: hidden;
+    position: relative;
+    height: 430px;
+}
+
+.login-card-content {
+    position: absolute;
+    width: calc(90% - 80px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    margin-left: 80px;
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 16px;
+}
+
+#initial-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#login-form {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.login-card.form-active #initial-content {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.login-card.form-active #login-form {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.login-card h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.login-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.form-group input {
+    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 15%, transparent);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.btn {
+    font-family: 'Courier New', Courier, monospace;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 15px -5px var(--primary-color);
+
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px var(--primary-color);
+}
+
+.btn-secondary {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--border-color) 80%, #000);
+}
+
+/* Features Section */
+.features-section {
+    font-family: "Courier New", Courier, monospace;
+    padding-bottom: 80px;
+    padding-top: 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    font-size: 35px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+}
+
+.section-title p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    font-family: "Courier New", Courier, monospace;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px var(--shadow-sm);
+}
+
+.feature-card i {
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    font-family: "Courier New", Courier, monospace;
+    padding: 80px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.testimonial-card {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.testimonial-card blockquote {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 25px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.testimonial-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.author-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.author-info p {
+    color: var(--text-secondary);
+}
+
+/* Footer */
+footer {
+    background-color: var(--bg-card);
+    padding: 80px 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+}
+
+.footer-col .logo {
+    margin-bottom: 20px;
+}
+
+.footer-col p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-2px);
+    color: var(--text-primary);
+}
+
+.footer-col h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+
+    .hero-section,
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-section {
+        text-align: center;
+    }
+
+    .hero-content .description {
+        margin: 0 auto 40px;
+    }
+
+    .login-card {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-col {
+        text-align: center;
+    }
+
+    .social-links,
+    .logo {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .section-title h2 {
+        font-size: 36px;
+    }
+}
+
+/* ==========================================================================
+   ENHANCED RESPONSIVE DESIGN FOR HOME PAGE
+   Add this at the end of your home.css file (replaces existing @media)
+   ========================================================================== */
+
+/* Large Desktop (1400px and up) - Optional enhancements */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1600px;
+    }
+
+    .hero-content h1 {
+        font-size: 52px;
+    }
+
+    .features-grid {
+        gap: 40px;
+    }
+}
+
+/* Desktop to Tablet (1200px) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 1100px;
+        padding: 0 35px;
+    }
+
+    .hero-section {
+        gap: 50px;
+        padding: 120px 35px 70px;
+    }
+
+    .hero-content h1 {
+        font-size: 40px;
+    }
+
+    .features-grid {
+        gap: 25px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 50px;
+    }
+}
+
+/* Tablet Landscape (1024px) */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: 0 30px;
+    }
+
+    /* Header adjustments */
+    header {
+        padding: 15px 0;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo i {
+        font-size: 24px;
+    }
+
+    /* Hero section stacks */
+    .hero-section {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 100px 30px 60px;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
+        margin: 0 auto 20px;
+    }
+
+    .hero-content .description {
+        margin: 0 auto 35px;
+        max-width: 600px;
+    }
+
+    /* Login card centered */
+    .login-card {
+        max-width: 550px;
+        margin: 0 auto;
+        height: auto;
+        min-height: 430px;
+    }
+
+    .login-card-content {
+        position: relative;
+        width: 100%;
+        margin-left: 0;
+        padding: 35px;
+    }
+
+    /* Features grid 2 columns */
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .features-section {
+        padding: 60px 0;
+    }
+
+    .section-title h2 {
+        font-size: 32px;
+    }
+
+    .section-title {
+        margin-bottom: 50px;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+        padding: 60px 0;
+    }
+
+    .testimonial-card blockquote {
+        font-size: 18px;
+    }
+
+    /* Footer stacks */
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .footer-col:first-child {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    footer {
+        padding: 60px 0;
+    }
+}
+
+/* Tablet Portrait (768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 25px;
+    }
+
+    /* Header */
+    .logo {
+        font-size: 18px;
+    }
+
+    .logo i {
+        font-size: 22px;
+    }
+
+    .theme-toggle {
+        width: 45px;
+        height: 24px;
+    }
+
+    .theme-toggle-circle {
+        width: 18px;
+        height: 18px;
+        top: 2.5px;
+        left: 2.5px;
+    }
+
+    .theme-toggle.dark .theme-toggle-circle {
+        left: 24.5px;
+    }
+
+    /* Hero section */
+    .hero-section {
+        padding: 90px 25px 50px;
+        gap: 40px;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+        letter-spacing: -1px;
+    }
+
+    .hero-content .description {
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    /* Login card full width on mobile */
+    .login-card {
+        max-width: 100%;
+        padding: 30px 25px;
+        height: auto;
+        min-height: 400px;
+    }
+
+    .login-card-content {
+        padding: 30px 20px;
+    }
+
+    .login-card h2 {
+        font-size: 24px;
+    }
+
+    .login-card p {
+        font-size: 13px;
+    }
+
+    .form-group input {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 13px;
+    }
+
+    /* Features single column */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .features-section {
+        padding: 50px 0;
+    }
+
+    .section-title h2 {
+        font-size: 28px;
+    }
+
+    .section-title p {
+        font-size: 15px;
+    }
+
+    .feature-card {
+        padding: 25px;
+    }
+
+    .feature-card i {
+        font-size: 24px;
+    }
+
+    .feature-card h3 {
+        font-size: 17px;
+    }
+
+    .feature-card p {
+        font-size: 13px;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+        padding: 50px 0;
+    }
+
+    .testimonial-card blockquote {
+        font-size: 17px;
+        line-height: 1.5;
+    }
+
+    .author-info h4 {
+        font-size: 15px;
+    }
+
+    .author-info p {
+        font-size: 13px;
+    }
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        text-align: center;
+    }
+
+    .footer-col:first-child {
+        grid-column: 1;
+    }
+
+    .footer-col .logo {
+        justify-content: center;
+    }
+
+    .footer-col p {
+        font-size: 14px;
+    }
+
+    .footer-links {
+        text-align: center;
+    }
+
+    footer {
+        padding: 50px 0;
+    }
+
+    .footer-bottom {
+        margin-top: 40px;
+        padding-top: 25px;
+    }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+        padding: 12px 0;
+    }
+
+    .logo {
+        font-size: 16px;
+        gap: 10px;
+    }
+
+    .logo i {
+        font-size: 20px;
+    }
+
+    .theme-toggle {
+        width: 42px;
+        height: 22px;
+    }
+
+    .theme-toggle-circle {
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+    }
+
+    .theme-toggle.dark .theme-toggle-circle {
+        left: 22px;
+    }
+
+    /* Hero section */
+    .hero-section {
+        padding: 80px 20px 40px;
+        gap: 35px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+        letter-spacing: -0.5px;
+        margin-bottom: 18px;
+    }
+
+    .hero-content .description {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    /* Login card compact */
+    .login-card {
+        padding: 25px 20px;
+        border-radius: 12px;
+        min-height: 380px;
+    }
+
+    .login-card-content {
+        padding: 25px 15px;
+    }
+
+    .login-card h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+
+    .login-card p {
+        font-size: 12px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        padding: 11px 14px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 11px 20px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    /* Features */
+    .features-section {
+        padding: 40px 0;
+    }
+
+    .section-title {
+        margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+        font-size: 26px;
+        letter-spacing: -0.5px;
+    }
+
+    .section-title p {
+        font-size: 14px;
+    }
+
+    .features-grid {
+        gap: 18px;
+    }
+
+    .feature-card {
+        padding: 22px;
+        border-radius: 12px;
+    }
+
+    .feature-card i {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .feature-card p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+        padding: 40px 0;
+    }
+
+    .testimonial-card {
+        padding: 0 10px;
+    }
+
+    .testimonial-card blockquote {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-author {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .author-info h4 {
+        font-size: 14px;
+    }
+
+    .author-info p {
+        font-size: 12px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 40px 0;
+    }
+
+    .footer-grid {
+        gap: 30px;
+    }
+
+    .footer-col .logo {
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .footer-col p {
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .social-links a {
+        font-size: 20px;
+    }
+
+    .footer-col h4 {
+        font-size: 15px;
+        margin-bottom: 15px;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+
+    .footer-bottom {
+        margin-top: 30px;
+        padding-top: 20px;
+        font-size: 13px;
+    }
+}
+
+/* Extra Small Mobile (375px and below) */
+@media (max-width: 375px) {
+    .hero-content h1 {
+        font-size: 26px;
+    }
+
+    .login-card {
+        padding: 20px 15px;
+        min-height: 360px;
+    }
+
+    .login-card-content {
+        padding: 20px 12px;
+    }
+
+    .login-card h2 {
+        font-size: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 24px;
+    }
+
+    .feature-card {
+        padding: 20px;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero-section {
+        padding: 80px 20px 40px;
+    }
+
+    .login-card {
+        height: auto;
+        min-height: auto;
+    }
+
+    .login-card-content {
+        padding: 25px;
+    }
+}
+
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    body::before {
+        background-size: 120px 120px;
+    }
+
+    .login-card-content,
+    .feature-card {
+        border-width: 0.5px;
+    }
+}
+
+/* Print styles (bonus) */
+@media print {
+
+    body::before,
+    header,
+    .theme-toggle,
+    footer {
+        display: none !important;
+    }
+
+    .hero-section {
+        padding: 40px 20px;
+    }
+
+    .login-card {
+        border: 1px solid #333;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

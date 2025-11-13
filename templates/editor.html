@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/sql/sql.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editor.css') }}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/hint/show-hint.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/hint/show-hint.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/hint/sql-hint.js"></script>
+
+</head>
+
+<body class="light-theme">
+    <!-- Cyber corner decorations remain at the top level -->
+    <div class="cyber-corner top-left"></div>
+    <div class="cyber-corner top-right"></div>
+    <div class="cyber-corner bottom-left"></div>
+    <div class="cyber-corner bottom-right"></div>
+
+    <!-- The Top Bar is now a standalone element, always visible -->
+    <div id="topbar">
+        <div class="topbar-title">
+            <i class="fa-solid fa-bars hamburger" id="hamburger" onclick="toggleSidebar()"></i>
+            <i class="fa-solid fa-database"></i>
+            <span>SQL Editor</span>
+        </div>
+        <div class="topbar-actions">
+            <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+                <div class="theme-toggle-circle">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+            <a href="/logout" class="btn-logout-icon" title="Logout" onclick="return confirm('Do you want to Logout?')">
+                <i class="fa-solid fa-power-off"></i>
+            </a>
+            <button class="btn btn-secondary" onclick="clearOutput()">
+                <i class="fa-solid fa-eraser"></i>
+                Clear
+            </button>
+            <button class="btn btn-primary" onclick="runSQL()">
+                <i class="fa-solid fa-play"></i>
+                Run Query
+            </button>
+        </div>
+    </div>
+
+    <!-- This new wrapper holds the sidebars and the main content area -->
+    <div id="content-wrapper">
+
+        <!-- Left Sidebar: Now inside the wrapper -->
+        <div id="sidebar" class="closed">
+            <div class="sidebar-header panel-header"> <!-- Added panel-header class for consistent styling -->
+                <h3><i class="fa-solid fa-database"></i> Databases & Queries</h3>
+                <i class="fa-solid fa-times close-sidebar" onclick="toggleSidebar()"></i>
+            </div>
+            <div class="sidebar-content">
+                <div class="sidebar-section">
+                    <h4>Databases</h4>
+                    {% for db in databases %}
+                    <div class="menu-item" data-db="{{ db }}">
+                        <i class="fa-solid fa-database"></i>
+                        <span>{{db}}</span>
+                    </div>
+                    <div class="tables-container menu-item" id="tables-{{ db }}"
+                        style="display: none; margin-left: 20px;">
+                        <!-- Tables will be injected here -->
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area: Formerly #main, now renamed -->
+        <div id="main-content">
+            <div id="editor-area">
+                <div id="editor-container">
+                    <div id="editor-header" class="panel-header"> <!-- Added panel-header class -->
+                        <i class="fa-solid fa-code"></i>
+                        Query Editor
+                    </div>
+                    <input type="text" id="sqlInput">
+                </div>
+
+
+                <div id="resizer" class="resizer" data-direction="vertical"></div>
+
+                <div id="results">
+                    <div id="results-header" class="panel-header"> <!-- Added panel-header class -->
+                        <i class="fa-solid fa-table-cells"></i>
+                        Query Results
+                    </div>
+                    <div id="output">
+                        <div class="no-data">
+                            <i class="fa-solid fa-database"></i>
+                            <p>No query executed yet. Write your SQL and click "Run Query".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot Sidebar: Now inside the wrapper -->
+        <div id="chatbot-sidebar">
+            <div class="chatbot-header panel-header"> <!-- Added panel-header class -->
+                <h3><i class="fa-solid fa-robot"></i> SQL Assistant</h3>
+                <i class="fa-solid fa-times" id="close-chatbot"></i>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-empty-state" id="chat-empty-state">
+                    <i class="fa-solid fa-robot robot-icon"></i>
+                    <h4>AI SQL Assistant</h4>
+                    <p>Hello! I'm your intelligent SQL assistant. Ask me anything about queries, databases, or get help
+                        writing SQL code.</p>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask me about SQL...">
+                <button id="send-message-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CHATBOT UI Toggle Button -->
+    <button id="chatbot-toggle-button">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <!-- Status bar -->
+    <div class="status-bar"></div>
+
+
+    <script>
+        const clearOutput = () => {
+            document.getElementById('output').innerHTML = `<div class="no-data">
+                <i class="fa-solid fa-database"></i>
+                <p>No query executed yet. Write your SQL and click "Run Query".</p>
+            </div>`;
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const resizer = document.getElementById('resizer');
+            const leftPanel = document.getElementById('editor-container');
+            const rightPanel = document.getElementById('results');
+
+            let isResizing = false;
+
+            resizer.addEventListener('mousedown', function (e) {
+                isResizing = true;
+                // Add a class to the body to prevent text selection during resize
+                document.body.style.userSelect = 'none';
+                document.body.style.pointerEvents = 'none'; // To prevent iframe issues if any
+
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', function () {
+                    isResizing = false;
+                    // Remove the class to re-enable text selection
+                    document.body.style.userSelect = 'auto';
+                    document.body.style.pointerEvents = 'auto';
+                    document.removeEventListener('mousemove', handleMouseMove);
+                });
+            });
+
+            function handleMouseMove(e) {
+                if (!isResizing) return;
+
+                const container = document.getElementById('editor-area');
+                const containerRect = container.getBoundingClientRect();
+                const newLeftWidth = e.clientX - containerRect.left;
+
+                // Set a minimum width for the panels
+                const minWidth = 150; // in pixels
+
+                if (newLeftWidth > minWidth && container.offsetWidth - newLeftWidth > minWidth) {
+                    const newLeftPercentage = (newLeftWidth / container.offsetWidth) * 100;
+                    leftPanel.style.flexBasis = newLeftPercentage + '%';
+                    rightPanel.style.flexBasis = (100 - newLeftPercentage) + '%';
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // ... (Database and table click logic - no changes needed here)
+        const dbItems = document.querySelectorAll('.sidebar-section .menu-item');
+        dbItems.forEach(item => {
+            item.addEventListener('click', async () => {
+                const dbName = item.dataset.db;
+                const tableContainer = document.getElementById(`tables-${dbName}`);
+                if (tableContainer.style.display === 'block') {
+                    tableContainer.style.display = 'none';
+                    tableContainer.innerHTML = '';
+                    item.classList.remove('active');
+                    return;
+                }
+                dbItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                const res = await fetch('/get_tables', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ db_name: dbName })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    tableContainer.innerHTML = `<h4>TABLES</h4>` + data.tables
+                        .map(t => `<div class="table-item" data-table="${t}"><i class="fa-solid fa-table"></i> ${t}</div>`)
+                        .join('');
+                    tableContainer.style.display = 'block';
+                    attachTableClickHandlers(dbName);
+                } else {
+                    alert('Error fetching tables: ' + data.message);
+                }
+            });
+        });
+
+        function attachTableClickHandlers(dbName) {// Delegate clicks on table container
+            document.querySelectorAll('.tables-container').forEach(container => {
+                container.addEventListener('click', async (e) => {
+                    const item = e.target.closest('.table-item');
+                    if (!item) return; // Click was not on a table-item
+
+                    const dbName = container.id.replace('tables-', ''); // get dbName from container id
+
+                    // Remove active from siblings
+                    container.querySelectorAll('.table-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+
+                    const tableName = item.dataset.table;
+
+                    try {
+                        const res = await fetch('/table-click', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ db_name: dbName, table_name: tableName })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            let html = "<table><tr>";
+
+                            data.columns.forEach(col => {
+                                html += `<th>${col}</th>`;
+                            });
+                            html += "</tr>";
+
+                            data.rows.forEach(row => {
+                                html += "<tr>";
+                                row.forEach(value => {
+                                    html += `<td>${value}</td>`;
+                                });
+                                html += "</tr>";
+                            });
+
+                            html += "</table>";
+
+                            document.getElementById('output').innerHTML = html;
+
+                        } else {
+                            alert('Error fetching table: ' + data.message);
+                        }
+                        console.log('Table click response:', data);
+
+                    } catch (err) {
+                        console.error('Error calling backend on table click:', err);
+                    }
+
+                    // Enable Run Query button if needed
+                    document.querySelector('.btn-primary').disabled = false;
+                });
+            });
+
+        }
+
+
+    </script>
+
+
+
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("sqlInput"), {
+            mode: "text/x-mysql",
+            theme: "default",
+            lineNumbers: true,
+            indentWithTabs: true,
+            smartIndent: true,
+            lineWrapping: true,
+            extraKeys: { "Ctrl-Space": "autocomplete" }
+        });
+
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("closed");
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle("light-theme");
+            const toggle = document.getElementById("theme-toggle");
+            const toggleIcon = toggle.querySelector('i');
+
+            if (body.classList.contains("light-theme")) {
+                toggleIcon.className = "fa-solid fa-sun";
+                editor.setOption("theme", "default");
+                editor.getWrapperElement().style.background = "#fff"; // white background
+                editor.getWrapperElement().style.color = "#1e293b";    // dark text
+            } else {
+                toggleIcon.className = "fa-solid fa-moon";
+                editor.setOption("theme", "dracula");
+                editor.getWrapperElement().style.background = "#282a36"; // dracula background
+                editor.getWrapperElement().style.color = "#f8f8f2";      // dracula text
+            }
+        }
+
+
+        async function runSQL() {
+            const query = editor.getValue();
+            const outputDiv = document.getElementById("output");
+
+            try {
+                const res = await fetch("/run-sql", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    outputDiv.innerHTML = `
+                <div class="no-data error">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                    <p>${data.error}</p>
+                </div>`;
+                    return;
+                }
+
+                if (data.columns && data.rows) {
+                    renderTable(data.rows, data.columns);
+                    return;
+                }
+
+                if (data.message) {
+                    outputDiv.innerHTML = `
+                <div class="no-data success">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <p>${data.message}</p>
+                </div>`;
+                    return;
+                }
+
+                // fallback if nothing matches
+                outputDiv.innerHTML = `<div class="no-data"><p>No data returned.</p></div>`;
+
+            } catch (error) {
+                console.error("Error executing SQL:", error);
+                outputDiv.innerHTML = `
+            <div class="no-data error">
+                <i class="fa-solid fa-exclamation-triangle"></i>
+                <p>Could not connect to the server.</p>
+            </div>`;
+            }
+        }
+
+
+        function renderTable(rows, cols) {
+            const outputDiv = document.getElementById("output");
+
+            if (!rows || rows.length === 0) {
+                outputDiv.innerHTML = `
+            <div class="no-data">
+                <i class="fa-solid fa-inbox"></i>
+                <p>Query returned no rows.</p>
+            </div>`;
+                return;
+            }
+
+            let table = "<table><thead><tr>";
+            cols.forEach(c => table += `<th>${c}</th>`);
+            table += "</tr></thead><tbody>";
+
+            rows.forEach(r => {
+                table += "<tr>";
+                r.forEach(v => table += `<td>${v !== null ? v : '<span class="null-value">NULL</span>'}</td>`);
+                table += "</tr>";
+            });
+
+            table += "</tbody></table>";
+            outputDiv.innerHTML = table;
+        }
+
+
+        // --- CHATBOT LOGIC ---
+        const chatbotSidebar = document.getElementById("chatbot-sidebar");
+        const chatbotToggleButton = document.getElementById("chatbot-toggle-button");
+        const closeChatbotButton = document.getElementById("close-chatbot");
+        const mainContent = document.getElementById("main-content");
+
+        function toggleChatbot() {
+            chatbotSidebar.classList.toggle("open");
+            mainContent.classList.toggle("chatbot-open");
+            if (chatbotSidebar.classList.contains("open")) {
+                chatbotToggleButton.style.opacity = "0";
+                chatbotToggleButton.style.pointerEvents = "none";
+            } else {
+                chatbotToggleButton.style.opacity = "1";
+                chatbotToggleButton.style.pointerEvents = "all";
+            }
+        }
+
+        chatbotToggleButton.addEventListener("click", toggleChatbot);
+        closeChatbotButton.addEventListener("click", toggleChatbot);
+
+        const chatBox = document.querySelector(".chat-messages");
+        const input = document.getElementById("chat-input");
+        const sendBtn = document.getElementById("send-message-btn");
+        const emptyState = document.getElementById("chat-empty-state");
+
+        // ===============================================
+        //  THE FULL sendMessage FUNCTION IS RESTORED HERE
+        // ===============================================
+        async function sendMessage() {
+            let query = editor.getValue();
+            let msg = input.value.trim();
+            if (!msg) return;
+
+            // Remove empty state if it exists
+            const currentEmptyState = document.getElementById("chat-empty-state");
+            if (currentEmptyState) {
+                currentEmptyState.remove();
+            }
+
+            // Display user message
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "message user";
+            userMessageDiv.textContent = msg;
+            chatBox.appendChild(userMessageDiv);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = "";
+
+            // Display loading indicator
+            let loadingElem = document.createElement("div");
+            loadingElem.className = "message bot";
+            loadingElem.innerHTML = "Typing...";
+            chatBox.appendChild(loadingElem);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Simulate a backend call (replace with your actual fetch)
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: msg, sql_code: query })
+                });
+
+                const data = await response.json();
+                let reply = data.reply || "Sorry, I couldn't get a response.";
+
+                // Remove loading indicator and add the actual reply
+                loadingElem.innerHTML = reply; // You can add more complex HTML here if needed
+
+            } catch (error) {
+                console.error("Chatbot fetch error:", error);
+                loadingElem.textContent = "Error connecting to the AI assistant.";
+                loadingElem.style.color = "#ff6b6b";
+            }
+        }
+
+        sendBtn.addEventListener("click", sendMessage);
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault(); // Prevents new line in textarea on Enter
+                sendMessage();
+            }
+        });
+
+
+        var dbSchema = {{ db_schema | tojson | safe }};
+
+        // 2. Define a mapping from our types to Font Awesome icons.
+        const iconMap = {
+            database: 'fa-solid fa-database',
+            table: 'fa-solid fa-table',
+            column: 'fa-solid fa-columns',
+            keyword: 'fa-solid fa-key'
+        };
+
+        // 3. Create a custom hinter function.
+        function customSQLHinter(editor) {
+            const originalHint = CodeMirror.hint.sql; // Get the default SQL hinter
+            const result = originalHint(editor, { tables: dbSchema }); // Run it with our schema
+
+            if (result && result.list) {
+                // We need to process the list of suggestions
+                const newProposals = result.list.map(proposal => {
+                    let itemText = typeof proposal === 'string' ? proposal : proposal.text;
+                    let itemType = 'keyword'; // Default to keyword
+                    let displayType = '';
+
+                    // Check if this item exists in our rich schema to find its type
+                    if (dbSchema[itemText] && dbSchema[itemText][0]) {
+                        // It's a table or database
+                        itemType = dbSchema[itemText][0].type;
+                        displayType = itemType;
+                    } else {
+                        // Could it be a column? We have to check all tables.
+                        for (const key in dbSchema) {
+                            const foundColumn = dbSchema[key].find(col => col.name === itemText && col.type === 'column');
+                            if (foundColumn) {
+                                itemType = 'column';
+                                displayType = 'column';
+                                break;
+                            }
+                        }
+                    }
+
+                    // Get the appropriate icon class
+                    const iconClass = iconMap[itemType] || 'fa-solid fa-cube';
+
+                    // Return a new object for CodeMirror's renderer
+                    return {
+                        text: itemText, // The text to be inserted into the editor
+                        displayText: `
+                    <i class="cm-hint-icon ${itemType} ${iconClass}"></i>
+                    <span>${itemText}</span>
+                    <span class="cm-hint-type">${displayType}</span>
+                `, // The custom HTML to display in the list
+                        render: function (element, self, data) {
+                            // We use innerHTML because displayText contains HTML
+                            element.innerHTML = data.displayText;
+                        }
+                    };
+                });
+                result.list = newProposals;
+            }
+            return result;
+        }
+
+
+        // 4. Configure the editor to use our custom hinter.
+        editor.setOption("hintOptions", {
+            hint: customSQLHinter,
+            completeSingle: false
+        });
+
+        // 5. Use the reliable 'inputRead' event to trigger the autocomplete.
+        editor.on("inputRead", function (cm, change) {
+            if (change.origin !== "+input" || change.text[0] === ';') {
+                return;
+            }
+            if (!cm.state.completionActive) {
+                cm.showHint(); // This will now automatically use our customSQLHinter
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

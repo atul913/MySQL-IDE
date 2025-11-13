@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+</head>
+
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-database"></i>
+                <span>SQL Editor</span>
+            </div>
+            <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+                <div class="theme-toggle-circle">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1>High-Performance IDE for <span>Modern Databases</span></h1>
+                    <p class="description">
+                        An intelligent, lightning-fast SQL editor engineered for developers and data scientists who
+                        demand precision, power, and productivity.
+                    </p>
+                    <a href="#features" class="btn btn-secondary" style="width: auto;">Explore Features</a>
+                </div>
+                <div class="login-card" id="login-card">
+                    <div class="login-card-content" id="initial-content">
+                        <h2>Connect & Conquer</h2>
+                        <p>Enter your database credentials to securely connect and unlock your data's potential.</p>
+                        <button class="btn btn-primary" onclick="showLoginForm()">
+                            <i class="fa-solid fa-rocket"></i> Get Started
+                        </button>
+                    </div>
+                    <div class="login-card-content" id="login-form">
+                        <h2>Secure Connection</h2>
+                        <form onsubmit="handleSubmit(event)">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username" placeholder="Enter your MySQL username"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" placeholder=" Enter your MySQL
+                                    password" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="showInitialContent()">
+                                    <i class="fa-solid fa-arrow-left"></i></i> Back</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-plug"></i> Connect</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="features-section" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Engineered for Peak Performance</h2>
+                    <p>Our editor is packed with features designed to accelerate your workflow and enhance your data
+                        interaction.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fa-solid fa-robot"></i>
+                        <h3>AI Query Assistant</h3>
+                        <p>Generate, optimize, and debug SQL queries with our integrated AI, turning natural language
+                            into executable code.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h3>Instant Execution</h3>
+                        <p>Experience near-zero latency with our optimized query engine, getting you results faster than
+                            ever before.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <h3>Data Visualization</h3>
+                        <p>Instantly transform your query results into insightful charts and graphs without leaving the
+                            editor.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h3>Encrypted Connections</h3>
+                        <p>Connect to your databases with confidence. All credentials and connections are secured with
+                            industry-standard encryption.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-folder-tree"></i>
+                        <h3>Schema Explorer</h3>
+                        <p>Effortlessly navigate your database schema, tables, and views with our intuitive and
+                            responsive explorer.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <h3>Query History</h3>
+                        <p>Never lose your work. Automatically save and easily access a complete history of all executed
+                            queries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="testimonial-card">
+                    <blockquote>"SQL Editor Pro has fundamentally changed how our team works. The AI assistant is a
+                        game-changer, and the sheer speed of the interface has saved us countless hours."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Jane Doe</h4>
+                            <p>Lead Data Engineer, TechCorp</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <i class="fa-solid fa-database"></i>
+                        <span>SQL Editor Pro</span>
+                    </div>
+                    <p>The next-generation IDE for modern database management and data analysis.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Changelog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SQL Editor Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set default theme
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const toggle = document.getElementById("theme-toggle");
+            if (body.classList.contains("dark-theme")) {
+                toggle.classList.add("dark");
+                toggle.querySelector('i').className = "fa-solid fa-moon";
+            } else {
+                toggle.classList.remove("dark");
+                toggle.querySelector('i').className = "fa-solid fa-sun";
+            }
+        });
+
+        function toggleTheme() {
+            const body = document.body;
+            const toggle = document.getElementById("theme-toggle");
+            const toggleIcon = toggle.querySelector('i');
+
+            body.classList.toggle("dark-theme");
+            toggle.classList.toggle("dark");
+
+            if (body.classList.contains("dark-theme")) {
+                toggleIcon.className = "fa-solid fa-moon";
+            } else {
+                toggleIcon.className = "fa-solid fa-sun";
+            }
+        }
+
+        const loginCard = document.getElementById("login-card");
+        function showLoginForm() { loginCard.classList.add("form-active"); }
+        function showInitialContent() { loginCard.classList.remove("form-active"); }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Optional: show "simulating connection" first
+            alert(`Simulating connection for: ${username}...`);
+
+            try {
+                const response = await fetch('/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Connection successful!');
+                    window.location.href = '/editor';  // redirect after alert
+                } else {
+                    alert('Connection failed: ' + data.message);
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
