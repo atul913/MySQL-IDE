@@ -15,9 +15,11 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 - 🧑‍💻 **VS Code–like Layout** — A clean, dark-themed design with modern UI elements.  
 - 🏠 **Two Pages** —  
   - **Home Page:** Overview and quick access.
-  - - ![App Preview](static/images/home.png)
+  - ![App Preview](static/images/home.png)
+  - ![App Preview](static/images/home-dark.png)
   - **Editor Page:** Full workspace with chatbot and database tools.
-  - - ![App Preview](static/images/editor.png)
+  - ![App Preview](static/images/editor.png)
+  - ![App Preview](static/images/editor-dark.png)
 
 ---
 
@@ -34,17 +36,17 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 ---
 
 ## 📁 Folder Structure
-MySQL-IDE/
-├── app.py # Flask backend
-├── static/
-│ ├── css/ # Stylesheets
-│ └── js/ # Chatbot & editor scripts
-├── templates/
-│ ├── home.html
-│ └── editor.html
-├── requirements.txt
-├── .gitignore
-└── README.md
+MySQL-IDE/ <br>
+├── app.py # Flask backend <br>
+├── static/ <br>
+│ ├── css/ # Stylesheets <br>
+│ └── js/ # Chatbot & editor scripts <br>
+├── templates/ <br>
+│ ├── home.html <br>
+│ └── editor.html <br>
+├── requirements.txt <br>
+├── .gitignore <br>
+└── README.md <br>
 
 ---
 
