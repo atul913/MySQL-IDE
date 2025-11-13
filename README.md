@@ -15,11 +15,15 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 - 🧑‍💻 **VS Code–like Layout** — A clean, dark-themed design with modern UI elements.  
 - 🏠 **Two Pages** —  
   - **Home Page:** Overview and quick access.
-  - ![App Preview](static/images/home.png)
-  - ![App Preview](static/images/home-dark.png)
+  **Light Theme** <br>
+  ![App Preview](static/images/home.png)
+  **Dark Theme** <br>
+  ![App Preview](static/images/home-dark.png)
   - **Editor Page:** Full workspace with chatbot and database tools.
-  - ![App Preview](static/images/editor.png)
-  - ![App Preview](static/images/editor-dark.png)
+  **Light Theme** <br>
+  ![App Preview](static/images/editor.png)
+  **Dark Theme** <br>
+  ![App Preview](static/images/editor-dark.png)
 
 ---
 
