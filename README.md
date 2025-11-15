@@ -15,22 +15,15 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 - 🧑‍💻 **VS Code–like Layout** — A clean, dark-themed design with modern UI elements.
 
 ---
+  
+## 📸 Preview Screens
 
-## Preview  —  
-
-## 🏠 Home Page: Overview and quick access.
-### 🌞 Light Theme 
-  ![App Preview](static/images/home.png)
-### 🌙 Dark Theme
-  ![App Preview](static/images/home-dark.png)
-
---- 
-
-## ✏️ Editor Page: Full workspace with chatbot and database tools.
-### 🌞 Light Theme
-  ![App Preview](static/images/editor.png)
-### 🌙 Dark Theme
-  ![App Preview](static/images/editor-dark.png)
+| Page | Screenshot |
+|------|------------|
+| Home (In Light Theme) | ![](static/images/home.png) |
+| Home (In Dark Theme) | ![](static/images/home-dark.png) |
+| Editor (In Light Theme) | ![](static/images/editor.png) |
+| Editor (In Dark Theme) | ![](static/images/editor-dark.png) |
 
 ---
 
@@ -43,32 +36,6 @@ Built for developers who want a sleek, intelligent, and fully interactive SQL ed
 | Database | MySQL |
 | AI Chatbot | Groq API / LLM Integration |
 | Tools | Git, VS Code, XAMPP / MySQL Workbench |
-
----
-
-## 📁 Folder Structure
-MySQL-IDE/ <br>
-├── app.py # Flask backend <br>
-├── static/ <br>
-│ ├── css/ # Stylesheets <br>
-│ └── js/ # Chatbot & editor scripts <br>
-├── templates/ <br>
-│ ├── home.html <br>
-│ └── editor.html <br>
-├── requirements.txt <br>
-├── .gitignore <br>
-└── README.md <br>
-
----
-
-## ⚙️ Installation & Setup
-
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/username/MySQL-IDE.git
-cd MySQL-IDE
-
-```
 
 ---
 
@@ -109,3 +76,33 @@ cd MySQL-IDE
 <p align="center">
   <b>HTML5</b> • <b>CSS3</b> • <b>JavaScript</b> • <b>Flask</b> • <b>Python</b> • <b>MySQL</b>
 </p>
+
+---
+
+## 📁 Folder Structure
+
+```bash
+MySQL-IDE/
+├── app.py # Flask backend
+├── static/ 
+│ ├── css/ # Stylesheets
+│ └── js/ # Chatbot & editor scripts
+├── templates/ 
+│ ├── home.html 
+│ └── editor.html
+├── requirements.txt 
+├── .gitignore 
+└── README.md 
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/username/MySQL-IDE.git
+cd MySQL-IDE
+
+```
+
+---
